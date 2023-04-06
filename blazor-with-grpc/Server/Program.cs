@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddGrpc(); 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -28,9 +30,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseGrpcWeb();
 
 app.MapRazorPages();
-app.MapControllers();
+app.UseEndpoints(ep => ep.MapGrpcService<BlazorWithgRPC.Shared.WeatherService>().EnableGrpcWeb());
 app.MapFallbackToFile("index.html");
 
 app.Run();
